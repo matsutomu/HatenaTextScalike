@@ -1,0 +1,29 @@
+create table if not exists ms_user (
+    ID int not null,
+    NAME varchar(100) not null,
+    created_timestamp timestamp not null,
+    deleted_timestamp timestamp
+);
+
+alter table ms_user add constraint pk_ms_user PRIMARY KEY(ID);
+create unique index if not exists ms_user_name_index on ms_user (name);
+
+create table if not exists tr_entry (
+    ID int not null,
+    URL varchar(255) not null,
+    title varchar(255) 
+);
+alter table tr_entry add constraint pk_tr_entry PRIMARY KEY(ID);
+create unique index if not exists idx_tr_entry_url on tr_entry (URL);
+
+create table if not exists tr_bookmark (
+    ID int not null,
+    USER_ID int not null,
+    ENTRY_ID int not null,
+    COMMENT varchar(255)
+);
+alter table tr_bookmark add constraint pk_tr_bookmark PRIMARY KEY(ID);
+create unique index if not exists idx_tr_bookmark on tr_bookmark(USER_ID, ENTRY_ID);
+
+
+
