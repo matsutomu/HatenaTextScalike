@@ -31,18 +31,23 @@
 
 ## システム構成
 ・src/scala/model
+
  論理層間の値をやりとりするための"case class"を定義した。
 
 ・src/scala/repository
+
  データベースアクセス用のクラスを格納。更にdaoフォルダを用意して、ScalikeJDBCからの自動生成クラスを格納した。
 
 ・src/scala/service
+
  ひとまとまりにした処理を定義。ここからデータベース操作のrepositoryを呼び出す。
 
 ・src/scala/cli
- コンソールでの各種処理実行を定義した。
+コンソールでの各種処理実行を定義した。
 
 今後はWebフレームワークも組み込んでみたいです。
+
+
 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.1/jp/88x31.png" /></a><br />この 作品 は <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/">クリエイティブ・コモンズ 表示 - 非営利 - 継承 2.1 日本 ライセンスの下に提供されています。</a>
