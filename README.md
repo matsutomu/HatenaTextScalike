@@ -12,40 +12,38 @@
 
 ## 使っているもの
 
-・Java 8
-・Scala 2.11
-・sbt 0.13.x
- [はじめるsbt](http://www.scala-sbt.org/0.13/docs/ja/)
+・Java 8  
+・Scala 2.11  
+・sbt 0.13.x  
+ [はじめるsbt](http://www.scala-sbt.org/0.13/docs/ja/)  
 
-・[H2](http://www.h2database.com/html/main.html) データベース
- ローカルPCで簡単に実行できるデータベースエンジンです。（アプリに組み込む事もできるし、サーバーとしても利用可）
+・[H2](http://www.h2database.com/html/main.html) データベース  
+ ローカルPCで簡単に実行できるデータベースエンジンです。（アプリに組み込む事もできるし、サーバーとしても利用可）  
 
-・[flyway](https://flywaydb.org/)
- DBマイグレーションツール。テーブルの構造変更や、初期データの投入とかを管理するためのツール。
+・[flyway](https://flywaydb.org/)  
+ DBマイグレーションツール。テーブルの構造変更や、初期データの投入とかを管理するためのツール。  
 
-・[specs2](https://etorreborre.github.io/specs2/)
- Scala 用のテストフレームワーク。
+・[specs2](https://etorreborre.github.io/specs2/)  
+ Scala 用のテストフレームワーク。  
 
-・[ScalikeJDBC 2.3.x](http://scalikejdbc.org/)
- Scala 用のデータベースアクセス用 フレームワーク。
+・[ScalikeJDBC 2.3.x](http://scalikejdbc.org/)  
+ Scala 用のデータベースアクセス用 フレームワーク。  
 
-## システム構成
-・src/scala/model
+## システム構成  
+・src/scala/model  
+ 論理層間の値をやりとりするための"case class"を定義した。  
 
- 論理層間の値をやりとりするための"case class"を定義した。
+・src/scala/repository  
+ データベースアクセス用のクラスを格納。更にdaoフォルダを用意して、ScalikeJDBCからの自動生成クラスを格納した。  
 
-・src/scala/repository
+・src/scala/service  
+ ひとまとまりにした処理を定義。ここからデータベース操作のrepositoryを呼び出す。  
 
- データベースアクセス用のクラスを格納。更にdaoフォルダを用意して、ScalikeJDBCからの自動生成クラスを格納した。
+・src/scala/cli  
+コンソールでの各種処理実行を定義した。  
 
-・src/scala/service
 
- ひとまとまりにした処理を定義。ここからデータベース操作のrepositoryを呼び出す。
-
-・src/scala/cli
-コンソールでの各種処理実行を定義した。
-
-今後はWebフレームワークも組み込んでみたいです。
+今後はWebフレームワークも組み込んでみたいです。  
 
 
 
