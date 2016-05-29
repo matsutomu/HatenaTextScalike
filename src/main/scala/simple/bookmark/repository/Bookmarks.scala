@@ -9,7 +9,7 @@ import simple.bookmark.model._
 import simple.bookmark.repository.dao._
 
 /**
-  * Created by tsutomu on 16/02/17.
+  * Created by matsutomu on 16/02/17.
   */
 object Bookmarks {
 

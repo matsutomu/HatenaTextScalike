@@ -8,7 +8,7 @@ import simple.bookmark.service.BookmarkApp
 import scala.sys.process
 
 /**
-  * Created by tsutomu on 16/02/03.
+  * Created by matsutomu on 16/02/03.
   */
 object BookmarkCLI {
 
@@ -27,6 +27,7 @@ object BookmarkCLI {
           DBs.setupAll()
 
           implicit val session = AutoSession
+
 
           val app = createApp(userName)
           args.toList match {

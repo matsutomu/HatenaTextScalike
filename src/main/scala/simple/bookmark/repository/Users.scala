@@ -9,7 +9,7 @@ import org.joda.time.LocalDateTime
 import simple.bookmark.model.User
 
 /**
-  * Created by tsutomu on 16/02/12.
+  * Created by matsutomu on 16/02/12.
   */
 object Users {
 

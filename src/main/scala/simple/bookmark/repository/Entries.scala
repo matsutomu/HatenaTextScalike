@@ -6,7 +6,7 @@ import simple.bookmark.model.{Bookmark, Entry}
 import simple.bookmark.repository.dao.{TrEntry}
 
 /**
-  * Created by tsutomu on 16/02/14.
+  * Created by matsutomu on 16/02/14.
   */
 object Entries {
 

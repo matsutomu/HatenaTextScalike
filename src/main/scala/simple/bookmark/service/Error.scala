@@ -1,7 +1,7 @@
 package simple.bookmark.service
 
 /**
-  * Created by tsutomu on 16/02/24.
+  * Created by matsutomu on 16/02/24.
   */
 sealed trait Error {
   override def toString() = this match {

@@ -4,7 +4,7 @@ import org.joda.time.DateTime
 import scalikejdbc._, config._
 
 /**
-  * Created by tsutomu on 16/02/14.
+  * Created by matsutomu on 16/02/14.
   */
 trait DBSettings {
   DBSettings.initialize()

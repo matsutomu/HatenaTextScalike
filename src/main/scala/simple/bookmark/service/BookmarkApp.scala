@@ -6,7 +6,7 @@ import simple.bookmark.model._
 
 
 /**
-  * Created by tsutomu on 16/02/24.
+  * Created by matsutomu on 16/02/24.
   */
 class BookmarkApp(currentUserName: String) {
 
