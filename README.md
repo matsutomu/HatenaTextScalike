@@ -26,7 +26,7 @@
 ・[specs2](https://etorreborre.github.io/specs2/)
  Scala 用のテストフレームワーク。
 
-・ScalikeJDBC 2.3.x
+・[ScalikeJDBC 2.3.x](http://scalikejdbc.org/)
  Scala 用のデータベースアクセス用 フレームワーク。
 
 ## システム構成
