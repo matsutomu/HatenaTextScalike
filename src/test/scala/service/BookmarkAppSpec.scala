@@ -7,7 +7,6 @@ import simple.bookmark.model._
 
 class BookmarkAppSpec extends Specification  with settings.DBSettings {
 
-
   "BookmarkAppSpec" should {
 
     "1. current user create " in new AutoRollback {
@@ -97,8 +96,4 @@ class BookmarkAppSpec extends Specification  with settings.DBSettings {
     }
 
   }
-
 }
-
-
-
