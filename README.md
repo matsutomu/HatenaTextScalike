@@ -33,6 +33,7 @@ Slick 3 が難しかったので、ScalikeJDBCの学習を兼ねつつSlickの�
 
 今後はWebフレームワークも組み込んでみたいです。  
 ## Skinny Framework 対応
+試しにcommit
 
 
 
