@@ -32,7 +32,7 @@ Slick 3 が難しかったので、ScalikeJDBCの学習を兼ねつつSlickの�
 ・src/scala/cli - コンソールでの各種処理実行を定義。
 
 今後はWebフレームワークも組み込んでみたいです。  
-
+## Skinny Framework 対応
 
 
 
