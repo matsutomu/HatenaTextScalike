@@ -1,42 +1,46 @@
-<%@val item: model.MsUser %>
+<%@val item: simple.bookmark.repository.MsUserDefault %>
 <%@val s: skinny.Skinny %>
 
 <%-- Be aware of package imports.
  1. src/main/scala/templates/ScalatePackage.scala
  2. scalateTemplateConfig in project/Build.scala
 --%>
+<div class="starter-template">
 
-<h3>${s.i18n.getOrKey("msUser.detail")}</h3>
-<hr/>
-#for (notice <- s.flash.notice)
-  <p class="alert alert-info">${notice}</p>
-#end
-<table class="table table-bordered">
-<tbody>
-  <tr>
-    <th>${s.i18n.getOrKey("msUser.id")}</th>
-    <td>${item.id}</td>
-  </tr>
-  <tr>
-    <th>${s.i18n.getOrKey("msUser.name")}</th>
-    <td>${item.name}</td>
-  </tr>
-  <tr>
-    <th>${s.i18n.getOrKey("msUser.createdTimestamp")}</th>
-    <td>${item.createdTimestamp}</td>
-  </tr>
-  <tr>
-    <th>${s.i18n.getOrKey("msUser.deletedTimestamp")}</th>
-    <td>${item.deletedTimestamp}</td>
-  </tr>
 
-</tbody>
-</table>
+  <h3>${s.i18n.getOrKey("msUser.detail")}</h3>
+  <hr/>
+  #for (notice <- s.flash.notice)
+    <p class="alert alert-info">${notice}</p>
+  #end
+  <table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th>${s.i18n.getOrKey("msUser.id")}</th>
+      <td>${item.id}</td>
+    </tr>
+    <tr>
+      <th>${s.i18n.getOrKey("msUser.name")}</th>
+      <td>${item.name}</td>
+    </tr>
+    <tr>
+      <th>${s.i18n.getOrKey("msUser.createdTimestamp")}</th>
+      <td>${item.createdTimestamp}</td>
+    </tr>
+    <tr>
+      <th>${s.i18n.getOrKey("msUser.deletedTimestamp")}</th>
+      <td>${item.deletedTimestamp}</td>
+    </tr>
 
-<hr/>
-<div class="form-actions">
-  <a class="btn btn-default" href="${s.url(controller.Controllers.msUsers.indexUrl)}">${s.i18n.getOrKey("backToList")}</a>
-  <a href="${s.url(Controllers.msUsers.editUrl, "id" -> item.id)}" class="btn btn-info">${s.i18n.getOrKey("edit")}</a>
-  <a data-method="delete" data-confirm="${s.i18n.getOrKey("msUser.delete.confirm")}"
-    href="${s.url(Controllers.msUsers.destroyUrl, "id" -> item.id)}" rel="nofollow" class="btn btn-danger">${s.i18n.getOrKey("delete")}</a>
+  </tbody>
+  </table>
+
+  <hr/>
+  <div class="form-actions">
+    <a class="btn btn-default" href="${s.url(simple.bookmark.controller.Controllers.msusers.indexUrl)}">${s.i18n.getOrKey("backToList")}</a>
+    <a href="${s.url(simple.bookmark.controller.Controllers.msusers.editUrl, "id" -> item.id)}" class="btn btn-info">${s.i18n.getOrKey("edit")}</a>
+    <a data-method="delete" data-confirm="${s.i18n.getOrKey("msUser.delete.confirm")}"
+      href="${s.url(simple.bookmark.controller.Controllers.msusers.destroyUrl, "id" -> item.id)}" rel="nofollow" class="btn btn-danger">${s.i18n.getOrKey("delete")}</a>
+  </div>
+
 </div>

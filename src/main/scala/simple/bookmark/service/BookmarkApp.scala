@@ -34,8 +34,14 @@ class BookmarkApp(currentUserName: String) {
     } yield editedBookmark
   }
 
+  def count()(implicit session: DBSession = AutoSession):Long =
+    Bookmarks.listCount(currentUser)
+
   def list()(implicit session: DBSession = AutoSession):List[Bookmark] =
     Bookmarks.listAll(currentUser).toList
+
+  def listPaged(page:Int , limit:Int)(implicit session: DBSession = AutoSession):List[Bookmark] =
+    Bookmarks.listPaged(currentUser, page, limit).toList
 
   def delete(bookmarkId: Long)(implicit session: DBSession = AutoSession): Either[Error, Unit] = {
     for {
@@ -49,5 +55,8 @@ class BookmarkApp(currentUserName: String) {
       bookmark <- Bookmarks.findByEntry(currentUser, entry).toRight(BookmarkNotFoundError).right
     } yield Bookmarks.delete(bookmark)
   }
+
+
+
 
 }

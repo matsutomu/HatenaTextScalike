@@ -1,4 +1,4 @@
-name := """HatenaTextScalike"""
+/* name := """HatenaTextScalike"""
 
 version := "1.0"
 
@@ -6,23 +6,35 @@ scalaVersion := "2.11.8"
 
 // Change this to another test framework if you prefer
 libraryDependencies ++= Seq(
-  "org.scalikejdbc" %% "scalikejdbc"       % "2.4.2",
-  "org.scalikejdbc" %% "scalikejdbc-config" % "2.4.2",
-  "org.scalikejdbc" %% "scalikejdbc-interpolation" % "2.4.2",
-  "com.h2database"  %  "h2"                % "1.4.190",
-  "ch.qos.logback"  %  "logback-classic"   % "1.1.3",
+  "org.scalikejdbc" %% "scalikejdbc"       % "2.4.+",
+  "org.scalikejdbc" %% "scalikejdbc-config" % "2.4.+",
+  "org.scalikejdbc" %% "scalikejdbc-interpolation" % "2.4.+",
+  "ch.qos.logback"  %  "logback-classic"   % "1.1.6",
+  "com.h2database"  %  "h2"                % "1.4.192",
   "org.scalikejdbc"      %% "scalikejdbc-test"              % scalikejdbcVersion  % "test",
-  "org.specs2" %% "specs2-core" % "3.7" % "test"
+  "org.specs2" %% "specs2-core" % "3.8.5" % "test"
 )
+
 // Uncomment to use Akka
 //libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.11"
-seq(flywaySettings: _*)
 
-flywayUrl := "jdbc:h2:file:./db/hatenatextscalikedb"
+// seq(flywaySettings: _*)
+// flywayUrl := "jdbc:h2:file:./db/hatenatextscalikedb"
+// flywayUser := "SA"
 
-flywayUser := "SA"
-
-scalikejdbcSettings
+// scalikejdbcSettings
 
 lazy val scalikejdbcVersion = scalikejdbc.ScalikejdbcBuildInfo.version
+*/
+// scalariformSettings
+
+// ------------------------------
+// for ./skinnny console
+initialCommands := """
+import skinny._
+import _root_.controller._, model._
+import org.joda.time._
+import scalikejdbc._, config._
+DBSettings.initialize()
+"""
 

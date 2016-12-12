@@ -4,14 +4,14 @@ import org.joda.time._
 import scalikejdbc._
 import skinny.orm._
 
-case class MsUser(
+case class MsUserDefault(
   id: Long,
   name: String,
   createdTimestamp: DateTime,
   deletedTimestamp: Option[DateTime] = None
 )
 
-object MsUser extends SkinnyCRUDMapper[MsUser] {
+object MsUserDefault extends SkinnyCRUDMapper[MsUserDefault] {
   override lazy val tableName = "ms_user"
   override lazy val defaultAlias = createAlias("mu")
 
@@ -28,7 +28,7 @@ object MsUser extends SkinnyCRUDMapper[MsUser] {
    *     autoConstruct(rs, rn, "company") // "company" will be skipped
    * }
    */
-  override def extract(rs: WrappedResultSet, rn: ResultName[MsUser]): MsUser = new MsUser(
+  override def extract(rs: WrappedResultSet, rn: ResultName[MsUserDefault]): MsUserDefault = new MsUserDefault(
     id = rs.get(rn.id),
     name = rs.get(rn.name),
     createdTimestamp = rs.get(rn.createdTimestamp),

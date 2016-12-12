@@ -1,13 +1,12 @@
 package simple.bookmark.repository
 
 import org.specs2.mutable._
-import scalikejdbc._
 import scalikejdbc.specs2.mutable.AutoRollback
 
 
-class IdentifierSpec extends Specification {
+class IdentifierSpec extends Specification with settings.DBSettings {
 
-  config.DBs.setupAll()
+
 
 
   "Identifier" should {

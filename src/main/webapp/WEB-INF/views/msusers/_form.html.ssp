@@ -96,5 +96,5 @@
 <div class="form-actions">
   ${unescape(s.csrfHiddenInputTag)}
   <input type="submit" class="btn btn-primary" value="${s.i18n.getOrKey("submit")}">
-  <a class="btn btn-default" href="${s.url(Controllers.msUsers.indexUrl)}">${s.i18n.getOrKey("cancel")}</a>
+  <a class="btn btn-default" href="${s.url(simple.bookmark.controller.Controllers.msusers.indexUrl)}">${s.i18n.getOrKey("cancel")}</a>
 </div>

@@ -1,9 +1,6 @@
 <%@val s: skinny.Skinny %>
 
-<%-- Be aware of package imports.
- 1. src/main/scala/templates/ScalatePackage.scala
- 2. scalateTemplateConfig in project/Build.scala
---%>
+<div class="starter-template">
 
 <h3>${s.i18n.getOrKey("msUser.new")}</h3>
 <hr/>
@@ -14,6 +11,8 @@
 #end
 --%>
 
-<form method="post" action="${s.url(Controllers.msUsers.createUrl)}" class="form">
+<form method="post" action="${s.url(simple.bookmark.controller.Controllers.msusers.createUrl)}" class="form">
  ${include("_form.html.ssp")}
 </form>
+
+</div>

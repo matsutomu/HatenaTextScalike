@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 import org.joda.time.DateTime
 import scalikejdbc._
+import sqls.{distinct, count}
 import simple.bookmark.model._
 import simple.bookmark.repository.dao._
 
@@ -55,6 +56,16 @@ object Bookmarks {
   }yield toBookmark(trBookmark,user,entry)
 
 
+  def listCount(user: User)(implicit session: DBSession = AutoSession): Long = {
+
+    val t = TrBookmark.syntax("t")
+    withSQL {
+      select(count(t.userId)).from(TrBookmark as t).where.eq(t.userId,user.id)
+    }.map(_.int(1)).single.apply().get
+
+  }
+
+
   def listAll(user: User)(implicit session: DBSession = AutoSession): Seq[Bookmark] = {
     val sWhere = sqls" user_id = ${user.id} "
     val sOrder = sqls" created_timestamp desc, id desc "
@@ -70,7 +81,20 @@ object Bookmarks {
 
   }
 
+  def listPaged(user: User,page: Int, limit: Int)(implicit session: DBSession = AutoSession): Seq[Bookmark] = {
+    val sWhere = sqls" user_id = ${user.id} "
+    val sOrder = sqls" created_timestamp desc, id desc "
 
+    val lst:List[TrBookmark] = withSQL {
+      select.from(TrBookmark as TrBookmark.tb).where.append(sWhere).orderBy(sOrder).limit(limit).offset(page)
+    }.map(TrBookmark(TrBookmark.tb.resultName)).list.apply()
+
+    for {
+      tr <- lst
+      ent <- Entries.find(tr.entryId)
+    } yield toBookmark(tr, user, ent)
+
+  }
 
 
   def toBookmark(p:TrBookmark,user:User, entry:Entry):Bookmark = {

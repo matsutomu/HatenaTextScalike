@@ -16,7 +16,7 @@ object DBSettings {
   def initialize(): Unit = this.synchronized {
     if(isInitialized) return
     println("*** start initialize")
-    DBs.setupAll()
+    config.DBsWithEnv("development").setupAll()
     GlobalSettings.loggingSQLErrors = true // error
     GlobalSettings.sqlFormatter = SQLFormatterSettings("utils.HibernateSQLFormatter")
     DBIntializer.run()

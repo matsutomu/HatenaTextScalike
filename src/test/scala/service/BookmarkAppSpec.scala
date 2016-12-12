@@ -1,9 +1,7 @@
 package simple.bookmark.service
 
-import org.joda.time.DateTime
 import org.specs2.mutable._
 import scalikejdbc.specs2.mutable.AutoRollback
-import simple.bookmark.model._
 
 class BookmarkAppSpec extends Specification  with settings.DBSettings {
 

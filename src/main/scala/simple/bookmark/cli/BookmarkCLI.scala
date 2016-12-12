@@ -1,6 +1,6 @@
 package simple.bookmark.cli
 
-import scalikejdbc.config.DBs
+import scalikejdbc._
 import scalikejdbc.{ConnectionPool, AutoSession, DBSession}
 import simple.bookmark.model.Bookmark
 import simple.bookmark.service.BookmarkApp
@@ -14,7 +14,8 @@ object BookmarkCLI {
 
   def main(args: Array[String]):Unit = {
     try {
-      DBs.setupAll()
+      // DBs.setupAll()
+      config.DBsWithEnv("development").setupAll()
 
       sys.env.get("USER") match {
         case Some(userName) =>
@@ -31,7 +32,8 @@ object BookmarkCLI {
       case e:Exception => println(e)
         
     }finally {
-      DBs.closeAll() // for h2 DB Embedded mode
+      // DBs.closeAll() // for h2 DB Embedded mode
+      config.DBsWithEnv("development").closeAll()
     }
     
   }
