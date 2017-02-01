@@ -20,6 +20,7 @@ object DBSettings {
     GlobalSettings.loggingSQLErrors = true // error
     GlobalSettings.sqlFormatter = SQLFormatterSettings("utils.HibernateSQLFormatter")
     DBIntializer.run()
+    DBIntializer.runInsertData()
     isInitialized = true
 
     println("*** end initialize")
@@ -36,7 +37,7 @@ object DBIntializer {
       }catch{
         case e:java.sql.SQLException =>
 
-          println("*** start create table / insert test data ")
+          println("*** start create table ")
           DB autoCommit { implicit s =>
             sql"""
                 create table if not exists ms_user (
@@ -75,32 +76,53 @@ object DBIntializer {
                 DROP ALIAS IF EXISTS UUID;
                 CREATE ALIAS UUID FOR "org.h2.value.ValueUuid.getNewRandom";
 
+                alter table ms_user add LOGINID  varchar(20) after NAME;
+                alter table ms_user add PASSWORD varchar(20) after LOGINID;
+                alter table ms_user add updated_timestamp timestamp after deleted_timestamp;
+
                """.execute.apply()
 
-            // ${DateTime.now} do not use.
-            sql"""
-                alter table ms_user alter column id restart with 1;
-                insert into ms_user (id, name, created_timestamp) values (1, 'Alice', CURRENT_TIMESTAMP());
-
-                alter table tr_entry alter column id restart with 1 ;
-                insert into tr_entry ( url, title, created_timestamp) values ('localhost', 'sample1' , CURRENT_TIMESTAMP());
-                insert into tr_entry ( url, title, created_timestamp) values ('localhost2', 'sample2' , CURRENT_TIMESTAMP());
-                insert into tr_entry ( url, title, created_timestamp) values ('localhost3', 'sample3' , CURRENT_TIMESTAMP());
-
-                alter table tr_bookmark alter column id restart with 1 ;
-                insert into tr_bookmark (user_id,entry_id,comment, created_timestamp) values (1, 1, 'テスト entry 1', CURRENT_TIMESTAMP());
-
-                create table if not exists ms_check_fortest (
-                    ID bigint not null ,
-                    created_timestamp timestamp not null,
-                    deleted_timestamp timestamp
-                );
-
-            """.execute.apply()
-            println("*** end create table / insert test data ")
+            println("*** end create table ")
           }
       }
 
+    }
+  }
+
+  def runInsertData(): Unit = {
+
+    val rec = DB readOnly { implicit s =>
+      sql"select name from ms_user where id = 1 ".map(rs => rs.string("name")).single.apply()
+    }
+
+    rec match {
+      case Some(alice) => println(s"*** ${alice} exist ")
+      case None => {
+        println("*** start insert test data ")
+        DB autoCommit { implicit s =>
+          sql"""
+            alter table ms_user alter column id restart with 1;
+            insert into ms_user (id, name, LOGINID, PASSWORD, created_timestamp) values (1, 'Alice', 'Alice', 'test', CURRENT_TIMESTAMP());
+
+            alter table tr_entry alter column id restart with 1 ;
+            insert into tr_entry ( url, title, created_timestamp) values ('localhost', 'sample1' , CURRENT_TIMESTAMP());
+            insert into tr_entry ( url, title, created_timestamp) values ('localhost2', 'sample2' , CURRENT_TIMESTAMP());
+            insert into tr_entry ( url, title, created_timestamp) values ('localhost3', 'sample3' , CURRENT_TIMESTAMP());
+
+            alter table tr_bookmark alter column id restart with 1 ;
+            insert into tr_bookmark (user_id,entry_id,comment, created_timestamp) values (1, 1, 'テスト entry 1', CURRENT_TIMESTAMP());
+
+            create table if not exists ms_check_fortest (
+                ID bigint not null ,
+                created_timestamp timestamp not null,
+                deleted_timestamp timestamp
+            );
+
+          """.execute.apply()
+          println("*** end insert test data ")
+
+        }
+      }
     }
   }
 

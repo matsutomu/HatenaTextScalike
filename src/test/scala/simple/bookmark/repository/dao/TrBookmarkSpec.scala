@@ -6,7 +6,7 @@ import scalikejdbc._
 import org.joda.time.{DateTime}
 
 
-class TrBookmarkSpec extends Specification {
+class TrBookmarkSpec extends Specification with settings.DBSettings {
 
   "TrBookmark" should {
 
@@ -37,13 +37,13 @@ class TrBookmarkSpec extends Specification {
       count should be_>(0L)
     }
     "create new record" in new AutoRollback {
-      val created = TrBookmark.create(userId = 1L, entryId = 1L, createdTimestamp = DateTime.now)
+      // IDX_TR_BOOKMARK
+      val created = TrBookmark.create(userId = 1L, entryId = 1001L, createdTimestamp = DateTime.now)
       created should not beNull
     }
     "save a record" in new AutoRollback {
       val entity = TrBookmark.findAll().head
-      // TODO modify something
-      val modified = entity
+      val modified = entity.copy(comment = Some(entity.comment.getOrElse("") + "modified"))
       val updated = TrBookmark.save(modified)
       updated should not equalTo(entity)
     }

@@ -15,6 +15,12 @@ object Users {
 
   val defDateTime = new DateTime(1970,1,1,1,1)
 
+
+  def findByLoginId(loginId: String)(implicit session: DBSession = AutoSession): Option[User] = {
+    val sqlWhere = sqls" LOGINID = ${loginId} "
+    toUser(MsUser.findBy(sqlWhere ))
+  }
+
   def find(userId: Long)(implicit session: DBSession = AutoSession): Option[User] =
     toUser(MsUser.find(userId))
 
@@ -29,9 +35,9 @@ object Users {
 
   def createByName(name:String)(implicit session: DBSession = AutoSession): User = {
 
-    val msUser = MsUser.create(name,DateTime.now(), null)
+    val msUser = MsUser.create(name,"","",DateTime.now(), null)
 
-    new User(msUser.id,msUser.name,
+    new User(msUser.id,msUser.name,msUser.loginid,msUser.password,
              msUser.createdTimestamp.toLocalDateTime,null)
 
   }
@@ -39,7 +45,7 @@ object Users {
   private def toUser(pMsUser: Option[MsUser]):Option[User] = {
     pMsUser match {
       case Some(m) => {
-        Some(new User(m.id, m.name
+        Some(new User(m.id, m.name, m.loginid, m.password
           , m.createdTimestamp.toLocalDateTime
           , Some(m.deletedTimestamp.getOrElse(defDateTime).toLocalDateTime)))
       }

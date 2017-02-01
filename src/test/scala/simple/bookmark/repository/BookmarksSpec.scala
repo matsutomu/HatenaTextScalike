@@ -12,7 +12,7 @@ class BookmarksSpec extends Specification  with settings.DBSettings {
   "BookmarksSpec" should {
 
       "1. find by id" in new AutoRollback {
-        val testUser = new User(1,"Test", DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
+        val testUser = new User(1,"Test", "", "", DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
         val testEntry = new Entry(1, "localhost",Some("") ,DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
         val retsById = Bookmarks.find(1).getOrElse(new Bookmark(1,testUser,testEntry,"",DateTime.now().toLocalDateTime,DateTime.now.toLocalDateTime))
 
@@ -21,7 +21,7 @@ class BookmarksSpec extends Specification  with settings.DBSettings {
       }
 
       "2. find by id (not found) " in new AutoRollback {
-        val testUser = new User(1,"Test", DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
+        val testUser = new User(1,"Test","", "", DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
         val testEntry = new Entry(1, "localhost",Some("") ,DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
         val retsById = Bookmarks.find(0).getOrElse(
                                 new Bookmark(0, testUser, testEntry ,"not found", DateTime.now().toLocalDateTime, null))
@@ -41,7 +41,7 @@ class BookmarksSpec extends Specification  with settings.DBSettings {
       }
 
       "4. del by BookmarkId" in new AutoRollback {
-        val testUser = new User(1,"Test", DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
+        val testUser = new User(1,"Test","", "", DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
         val testEntry = new Entry(1, "localhost",Some("") ,DateTime.now().toLocalDateTime, Some(DateTime.now().toLocalDateTime))
         val retsById = Bookmarks.find(1).getOrElse(new Bookmark(1,testUser,testEntry,"",DateTime.now().toLocalDateTime,DateTime.now.toLocalDateTime()))
 

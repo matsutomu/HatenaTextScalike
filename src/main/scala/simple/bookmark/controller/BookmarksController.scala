@@ -5,53 +5,82 @@ import skinny.validator._
 import java.util.Locale
 
 import org.joda.time.LocalDateTime
+import simple.bookmark.controller.Controllers.root._
 import skinny.filter._
 import simple.bookmark.service.BookmarkApp
-import simple.bookmark.model.Bookmark
+import simple.bookmark.util.LoginAuthenticate
+import simple.bookmark.model.User
 
 /**
   *
   */
-class BookmarksController extends ApplicationController {
+class BookmarksController extends ApplicationController with LoginAuthenticate {
   protectFromForgery()
 
   val row_cnt:Int = 5
-  //before(){layout("default_bookmarks.ssp")}
 
 //  beforeAction(only = Seq('index, 'indexWithSlash, 'new, 'create, 'createWithSlash, 'edit, 'update)) {
 //    set("companies", Company.findAll())
 //    set("skills", Skill.findAll())
 //  }
 
-  def index = {
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
-    set("page_max",  getPageMax(booApp))
-    set("bookmarks", booApp.listPaged(0,row_cnt))
-    render(s"/bookmarks/index")
+
+
+  /*
+   * index
+   */
+  def index = loginOnly(getCurrentUserId) { usr =>
+      val booApp: BookmarkApp = new BookmarkApp(usr.name)
+      set("page_max", getPageMax(booApp))
+      set("current_page" , 1l)
+      set("bookmarks", booApp.listPaged(0, row_cnt))
+      render(s"/bookmarks/index")
   }
 
-  def pageGet = params.getAs[Int]("page").map { page =>
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
 
+  /*
+   * page
+   */
+  def pageGet = loginOnly(getCurrentUserId) { usr =>
+    val booApp: BookmarkApp = new BookmarkApp(usr.name)
     val pageMax = getPageMax(booApp)
-    if(page <= pageMax){
-      set("page_max",  pageMax)
-      set("bookmarks", booApp.listPaged(((page - 1)*row_cnt)  , row_cnt))
-      render(s"/bookmarks/index")
-    }
-    else
+    (
+      for {
+        page <- params.getAs[Int]("page") if page <= pageMax
+      } yield {
+        set("page_max",  pageMax)
+        set("current_page" , page.toLong )
+        set("bookmarks", booApp.listPaged(((page - 1) * row_cnt), row_cnt))
+        render(s"/bookmarks/index")
+      }
+      ) getOrElse {
       haltWithBody(404)
-  }.getOrElse(
-    haltWithBody(404)
-  )
+    }
+  }
+
+  /*
+   * show detail
+   */
+  def show = loginOnly(getCurrentUserId) { usr =>
+    val booApp: BookmarkApp = new BookmarkApp(usr.name)
+    (
+    for{
+        id <- params.getAs[Long]("id")
+        item <- booApp.find(id)
+      }yield {
+        set("bookmark", item)
+        render("/bookmarks/show")
+    } ) getOrElse {
+      haltWithBody(404)
+    }
+  }
+
 
   def createParams = Params(params)
-
   def createForm = validation(createParams,
     paramKey("url") is required & maxLength(255),
     paramKey("comment") is required & maxLength(100)
   )
-
   def createFormStrongParameters = Seq(
     "url" -> ParamType.String,
     "comment" -> ParamType.String
@@ -65,95 +94,112 @@ class BookmarksController extends ApplicationController {
     "comment" -> ParamType.String
   )
 
-  def show = params.getAs[Long]("id").map { id =>
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
 
-    booApp.find(id).map{ item =>
-      set("bookmark", item)
-      render("/bookmarks/show")
-    }.getOrElse( haltWithBody(404))
-  }.getOrElse( haltWithBody(404))
-
-
-  def editGet = params.getAs[Long]("id").map { id =>
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
-
-    booApp.find(id).map { item =>
+  /*
+   * edit site
+   */
+  def editGet = loginOnly(getCurrentUserId) { usr =>
+    val booApp: BookmarkApp = new BookmarkApp(usr.name)
+    (for{
+      id   <- params.getAs[Long]("id")
+      item <- booApp.find(id)
+    } yield {
       set("bookmark", item)
       render(s"/bookmarks/edit")
-    }.getOrElse(haltWithBody(404))
+    }) getOrElse {
+        haltWithBody(404)
+    }
+  }
 
-  }.getOrElse(
-    haltWithBody(404)
-  )
+  /*
+   * edit
+   */
+  def editPost = loginOnly(getCurrentUserId) { usr =>
+    val booApp: BookmarkApp = new BookmarkApp(usr.name)
 
-  def editPost = params.getAs[Long]("id").map { id =>
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
-    if(updateForm.validate()){
-      val parameters = updateParams.permit(updateFormStrongParameters:_*)
-
-      booApp.find(id).map { item =>
-        booApp.edit(id, parameters.params("comment")._1.toString() )
-
-        //set("bookmarks",booApp.list())
+    (for {
+      id   <- params.getAs[Long]("id")
+      item <- booApp.find(id)
+    } yield {
+      if (updateForm.validate()) {
+        val parameters = updateParams.permit(updateFormStrongParameters: _*)
+        booApp.edit(id, getPermParaAsString("comment",parameters))
         redirect("/bookmarks")
-      }.getOrElse(haltWithBody(404))
-
-    } else {
-      booApp.find(id).map { item =>
+      } else {
         set("bookmark", item)
         render("/bookmarks/edit")
-      }.getOrElse(haltWithBody(404))
+      }
+    }) getOrElse {
+      haltWithBody(404)
     }
-  }.getOrElse( haltWithBody(404))
+  }
 
+  /*
+   * delete
+   */
+  def delete = loginOnly(getCurrentUserId) { usr =>
+    val booApp: BookmarkApp = new BookmarkApp(usr.name)
 
-  def delete = params.getAs[Long]("id").map { id =>
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
+    (for {
+      id   <- params.getAs[Long]("id")
+      item <- booApp.find(id)
+      } yield {
+        booApp.delete(id)
+        set("page_max", getPageMax(booApp))
+        set("current_page" , 1l)
+        set("bookmarks", booApp.listPaged(0, row_cnt))
+        render(s"/bookmarks")
+      }
+    ).getOrElse(haltWithBody(404))
+  }
 
-    booApp.find(id).map { item =>
-      booApp.delete(id)
-      set("page_max",  getPageMax(booApp))
-      set("bookmarks", booApp.listPaged(0,row_cnt))
-      render(s"/bookmarks")
-    }.getOrElse(haltWithBody(404))
-
-  }.getOrElse( haltWithBody(404))
-
-
-  def addGet = {
-    val defaultTime = LocalDateTime.now()
-    set("bookmark", new simple.bookmark.model.Bookmark(0, simple.bookmark.model.User(0, "",defaultTime, Some(defaultTime)),
-                                                          simple.bookmark.model.Entry(0, "", Some(""),defaultTime,Some(defaultTime))
-                                                       ,"", defaultTime,defaultTime))
+  /*
+   * add / default
+   */
+  def addGet = loginOnly(getCurrentUserId) { usr =>
+    set("bookmark", BookmarkApp.createDefault())
     render("/bookmarks/new")
   }
 
-  def addPost = {
-    val booApp: BookmarkApp = new BookmarkApp("matsutomu")
+  /*
+   * add / post
+   */
+  def addPost = loginOnly(getCurrentUserId) { usr =>
+      val booApp: BookmarkApp = new BookmarkApp(usr.name)
 
-    if(createForm.validate()){
-      val parameters = createParams.permit(createFormStrongParameters:_*)
-      booApp.add(parameters.params("url")._1.toString, parameters.params("comment")._1.toString)
+      if (createForm.validate()) {
+        val parameters = createParams.permit(createFormStrongParameters: _*)
+        val entry  = booApp.findEntryByUrl(getPermParaAsString("url",parameters))
+        val result = booApp.add(getPermParaAsString("url",parameters),
+                                getPermParaAsString("comment",parameters))
+        result match {
+          case Right(res) => {
+            set("page_max", getPageMax(booApp))
+            set("current_page" , 1l)
+            set("bookmarks", booApp.listPaged(0, row_cnt))
 
-      set("page_max",  getPageMax(booApp))
-      set("bookmarks", booApp.listPaged(0,row_cnt))
+            entry match {
+              case Some(e) => flash += ("msg" -> createI18n().getOrKey("bookmarks.flash.updated"))
+              case None    => flash += ("msg" -> createI18n().getOrKey("bookmarks.flash.created"))
+            }
 
-      render(s"/bookmarks/index")
+            render(s"/bookmarks/index")
+          }
+          case Left(err) => {
+            //todo err message output
+            set("bookmark", BookmarkApp.createDefault())
+            render("/bookmarks/new")
+          }
+        }
 
-    } else {
-      val defaultTime = LocalDateTime.now()
-      set("bookmark", new simple.bookmark.model.Bookmark(0, simple.bookmark.model.User(0, "",defaultTime, Some(defaultTime)),
-        simple.bookmark.model.Entry(0, "", Some(""),defaultTime,Some(defaultTime))
-        ,"", defaultTime,defaultTime))
+      } else {
+        set("bookmark", BookmarkApp.createDefault())
+        render("/bookmarks/new")
 
-      render("/bookmarks/new")
-
-    }
-
+      }
   }
 
-  def getPageMax(booApp: BookmarkApp) =  Math.ceil(booApp.count().toDouble / row_cnt).toLong
+  private def getPageMax(booApp: BookmarkApp) =  Math.ceil(booApp.count().toDouble / row_cnt).toLong
 
 
 }

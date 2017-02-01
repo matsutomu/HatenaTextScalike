@@ -6,7 +6,7 @@ import scalikejdbc._
 import org.joda.time.{DateTime}
 
 
-class TrEntrySpec extends Specification {
+class TrEntrySpec extends Specification with settings.DBSettings {
 
   "TrEntry" should {
 
@@ -42,8 +42,7 @@ class TrEntrySpec extends Specification {
     }
     "save a record" in new AutoRollback {
       val entity = TrEntry.findAll().head
-      // TODO modify something
-      val modified = entity
+      val modified = entity.copy(title = Some(entity.title.getOrElse("") +  " modified "))
       val updated = TrEntry.save(modified)
       updated should not equalTo(entity)
     }

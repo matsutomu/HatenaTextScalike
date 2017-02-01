@@ -3,15 +3,20 @@ package simple.bookmark.repository
 import org.joda.time._
 import scalikejdbc._
 import skinny.orm._
+import simple.bookmark.util.MyTimestampsFeature
+
 
 case class MsUserDefault(
   id: Long,
   name: String,
+  loginid : String,
+  password: String,
   createdTimestamp: DateTime,
-  deletedTimestamp: Option[DateTime] = None
+  deletedTimestamp: Option[DateTime] = None,
+  updatedTimestamp: Option[DateTime] = None
 )
 
-object MsUserDefault extends SkinnyCRUDMapper[MsUserDefault] {
+object MsUserDefault extends SkinnyCRUDMapper[MsUserDefault] with MyTimestampsFeature[MsUserDefault] {
   override lazy val tableName = "ms_user"
   override lazy val defaultAlias = createAlias("mu")
 
@@ -31,7 +36,10 @@ object MsUserDefault extends SkinnyCRUDMapper[MsUserDefault] {
   override def extract(rs: WrappedResultSet, rn: ResultName[MsUserDefault]): MsUserDefault = new MsUserDefault(
     id = rs.get(rn.id),
     name = rs.get(rn.name),
+    loginid = rs.get(rn.loginid),
+    password = rs.get(rn.password),
     createdTimestamp = rs.get(rn.createdTimestamp),
-    deletedTimestamp = rs.get(rn.deletedTimestamp)
+    deletedTimestamp = rs.get(rn.deletedTimestamp),
+    updatedTimestamp = rs.get(rn.updatedTimestamp)
   )
 }

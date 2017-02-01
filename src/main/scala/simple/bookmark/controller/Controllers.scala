@@ -25,7 +25,8 @@ object Controllers {
       layout("default.ssp")
     }
 
-    val indexUrl = get("/?")(index).as('index)
+    val indexUrl = get("/")(index).as('index)
+    val loginUrl = post("/signin")(login).as('signin)
   }
 
   object bookmarks extends BookmarksController with Routes {

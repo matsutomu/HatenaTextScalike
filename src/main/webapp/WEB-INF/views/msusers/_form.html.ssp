@@ -7,17 +7,17 @@
 --%>
 
 <div class="form-group">
-  <label class="control-label" for="name">
-    ${s.i18n.getOrKey("msUser.name")}
-  </label>
   <div class="controls row">
     <div class="${if(keyAndErrorMessages.hasErrors("name")) "has-error" else ""}">
-      <div class="col-xs-12">
+      <label class="control-label col-xs-6" for="name">
+        ${s.i18n.getOrKey("msUser.name")}
+      </label>
+      <div class="col-xs-6">
         <input type="text" name="name" class="form-control" value="${s.params.name}" />
       </div>
     </div>
     #if (keyAndErrorMessages.hasErrors("name"))
-      <div class="col-xs-12 has-error">
+      <div class="col-xs-6 alert alert-danger">
         #for (error <- keyAndErrorMessages.getErrors("name"))
           <label class="control-label">${error}</label>
         #end
@@ -25,74 +25,48 @@
     #end
   </div>
 </div>
+<br />
 <div class="form-group">
-  <label class="control-label">
-    ${s.i18n.getOrKey("msUser.createdTimestamp")}
-  </label>
   <div class="controls row">
-    <div class="${if(keyAndErrorMessages.hasErrors("created_timestamp")) "has-error" else ""}">
-      <div class="col-xs-2">
-        <input type="text" name="created_timestamp_year"   class="form-control" value="${s.params.created_timestamp_year}"   placeholder="${s.i18n.getOrKey("year")}"  maxlength=4 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="created_timestamp_month"  class="form-control" value="${s.params.created_timestamp_month}"  placeholder="${s.i18n.getOrKey("month")}" maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="created_timestamp_day"    class="form-control" value="${s.params.created_timestamp_day}"    placeholder="${s.i18n.getOrKey("day")}"   maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="created_timestamp_hour"   class="form-control" value="${s.params.created_timestamp_hour}"   placeholder="${s.i18n.getOrKey("hour")}"  maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="created_timestamp_minute" class="form-control" value="${s.params.created_timestamp_minute}" placeholder="${s.i18n.getOrKey("minute")}" maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="created_timestamp_second" class="form-control" value="${s.params.created_timestamp_second}" placeholder="${s.i18n.getOrKey("second")}" maxlength=2 />
+    <div class="${if(keyAndErrorMessages.hasErrors("loginid")) "has-error" else ""}">
+    <label class="control-label col-xs-6" for="loginid">
+      ${s.i18n.getOrKey("msUser.loginid")}
+    </label>
+    <div class="col-xs-6">
+      <input type="text" name="loginid" class="form-control" value="${s.params.loginid}" />
       </div>
     </div>
-    #if (keyAndErrorMessages.hasErrors("created_timestamp"))
-      <div class="col-xs-12 has-error">
-        #for (error <- keyAndErrorMessages.getErrors("created_timestamp"))
-          <label class="control-label">${error}</label>
-        #end
+    #if (keyAndErrorMessages.hasErrors("loginid"))
+      <div class="col-xs-6 alert alert-danger">
+      #for (error <- keyAndErrorMessages.getErrors("loginid"))
+        <label class="control-label">${error}</label>
+      #end
       </div>
     #end
   </div>
 </div>
+
+<br />
 <div class="form-group">
-  <label class="control-label">
-    ${s.i18n.getOrKey("msUser.deletedTimestamp")}
-  </label>
   <div class="controls row">
-    <div class="${if(keyAndErrorMessages.hasErrors("deleted_timestamp")) "has-error" else ""}">
-      <div class="col-xs-2">
-        <input type="text" name="deleted_timestamp_year"   class="form-control" value="${s.params.deleted_timestamp_year}"   placeholder="${s.i18n.getOrKey("year")}"  maxlength=4 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="deleted_timestamp_month"  class="form-control" value="${s.params.deleted_timestamp_month}"  placeholder="${s.i18n.getOrKey("month")}" maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="deleted_timestamp_day"    class="form-control" value="${s.params.deleted_timestamp_day}"    placeholder="${s.i18n.getOrKey("day")}"   maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="deleted_timestamp_hour"   class="form-control" value="${s.params.deleted_timestamp_hour}"   placeholder="${s.i18n.getOrKey("hour")}"  maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="deleted_timestamp_minute" class="form-control" value="${s.params.deleted_timestamp_minute}" placeholder="${s.i18n.getOrKey("minute")}" maxlength=2 />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" name="deleted_timestamp_second" class="form-control" value="${s.params.deleted_timestamp_second}" placeholder="${s.i18n.getOrKey("second")}" maxlength=2 />
+    <div class="${if(keyAndErrorMessages.hasErrors("password")) "has-error" else ""}">
+    <label class="control-label col-xs-6" for="password">
+      ${s.i18n.getOrKey("msUser.password")}
+    </label>
+    <div class="col-xs-6">
+      <input type="text" name="password" class="form-control" value="${s.params.password}" />
       </div>
     </div>
-    #if (keyAndErrorMessages.hasErrors("deleted_timestamp"))
-      <div class="col-xs-12 has-error">
-        #for (error <- keyAndErrorMessages.getErrors("deleted_timestamp"))
-          <label class="control-label">${error}</label>
-        #end
+    #if (keyAndErrorMessages.hasErrors("password"))
+      <div class="col-xs-6 alert alert-danger">
+      #for (error <- keyAndErrorMessages.getErrors("password"))
+        <label class="control-label">${error}</label>
+      #end
       </div>
     #end
   </div>
 </div>
+<br />
 <div class="form-actions">
   ${unescape(s.csrfHiddenInputTag)}
   <input type="submit" class="btn btn-primary" value="${s.i18n.getOrKey("submit")}">

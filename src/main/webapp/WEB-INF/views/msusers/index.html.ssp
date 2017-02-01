@@ -4,7 +4,7 @@
 <%@val page: Int = s.params.page.map(_.toString.toInt).getOrElse(1) %>
 
 <!-- (s) this page contents -->
-<div class="starter-template">
+<div class="starter-template" >
 
 
 <h3>${s.i18n.getOrKey("msUser.list")}</h3>

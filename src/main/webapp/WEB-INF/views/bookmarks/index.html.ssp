@@ -1,0 +1,88 @@
+<%@val s: skinny.Skinny %>
+<%@val bookmarks: List[simple.bookmark.model.Bookmark] %>
+<%@val page_max:Long %>
+<%@val current_page:Long %>
+
+
+<!-- (s) this page contents -->
+<div class="starter-template">
+
+  <h3>ブックマーク一覧</h3>
+  <p class="lead"><!-- memo --></p>
+
+  <div class="outerdiv">
+    #for (w <- s.flash.msg)
+      <div class="alert alert-success" role="alert">${w}</div>
+    #end
+    <div class="clearfix">
+      <a href="${s.url(simple.bookmark.controller.Controllers.bookmarks.addGetUrl)}" class="btn btn-success float-xs-right" role="button">${s.i18n.getOrKey("New")}</a>
+    </div>
+  </div>
+
+  <table class="simple">
+  <thead>
+    <tr>
+      <th>${s.i18n.getOrKey("bookmarks.id")}</th>
+      <th>${s.i18n.getOrKey("bookmarks.entry.url")}</th>
+      <th>${s.i18n.getOrKey("bookmarks.entry.title")}</th>
+      <th>${s.i18n.getOrKey("bookmarks.entry.btntitle")}</th>
+    </tr>
+  </thead>
+  <tbody>
+    #for (bookmark <- bookmarks)
+      <tr>
+        <td>${bookmark.id} </td>
+        <td>${bookmark.entry.url} </td>
+        <td>${bookmark.entry.title} </td>
+        <td>
+          <a href="${s.url(simple.bookmark.controller.Controllers.bookmarks.showUrl, "id" -> bookmark.id)}" class="btn btn-info">${s.i18n.getOrKey("detail")}</a>
+          <a href="${s.url(simple.bookmark.controller.Controllers.bookmarks.editGetUrl, "id" -> bookmark.id)}" class="btn btn-info">${s.i18n.getOrKey("edit")}</a>
+          <a data-method="delete" data-confirm="${s.i18n.getOrKey("bookmarks.delete.confirm")}"
+          href="${s.url(simple.bookmark.controller.Controllers.bookmarks.destroyUrl, "id" -> bookmark.id)}" rel="nofollow" class="btn btn-danger">${s.i18n.getOrKey("delete")}</a>
+        </td>
+
+      </tr>
+    #end
+    #if (bookmarks.isEmpty)
+      <tr>
+        <td colspan="5">${s.i18n.getOrKey("empty")}</td>
+      </tr>
+    #end
+  </tbody>
+  </table>
+
+  #if ( page_max > 1 )
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+
+      #if ( page_max > 5 )
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+      #end
+
+      #for (i <- 1l to page_max)
+        <li class="page-item ${if(current_page == i) "active" else ("")}"><a class="page-link" href="${s.url(simple.bookmark.controller.Controllers.bookmarks.pageUrl, "page" -> i)}">${i} <span class="sr-only">(current)</span></a></li>
+      #end
+
+      #if ( page_max > 5 )
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      #end
+      </ul>
+    </nav>
+
+  #end
+
+  </div>
+<!-- (e) this page contents -->
+
+
+

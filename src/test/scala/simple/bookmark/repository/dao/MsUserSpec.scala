@@ -6,7 +6,7 @@ import scalikejdbc._
 import org.joda.time.{DateTime}
 
 
-class MsUserSpec extends Specification {
+class MsUserSpec extends Specification with settings.DBSettings {
 
   "MsUser" should {
 
@@ -37,13 +37,12 @@ class MsUserSpec extends Specification {
       count should be_>(0L)
     }
     "create new record" in new AutoRollback {
-      val created = MsUser.create(name = "MyString", createdTimestamp = DateTime.now)
+      val created = MsUser.create(name = "MyString", loginid="MyString", password="test", createdTimestamp = DateTime.now)
       created should not beNull
     }
     "save a record" in new AutoRollback {
       val entity = MsUser.findAll().head
-      // TODO modify something
-      val modified = entity
+      val modified = entity.copy(name = "modified")
       val updated = MsUser.save(modified)
       updated should not equalTo(entity)
     }

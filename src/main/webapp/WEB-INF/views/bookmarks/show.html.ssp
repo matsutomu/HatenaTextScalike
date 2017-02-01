@@ -1,0 +1,47 @@
+<%@val s: skinny.Skinny %>
+<%@val bookmark: simple.bookmark.model.Bookmark %>
+
+<div class="starter-template">
+
+    <h3>${s.i18n.getOrKey("bookmarks.detail")}</h3>
+    <hr/>
+    #for (notice <- s.flash.notice)
+      <p class="alert alert-info">${notice}</p>
+    #end
+
+
+    <table class="table detail">
+    <tbody>
+      <tr>
+        <th>${s.i18n.getOrKey("bookmarks.id")}</th>
+        <td>${bookmark.id}</td>
+      </tr>
+      <tr>
+        <th>${s.i18n.getOrKey("bookmarks.entry.title")}</th>
+        <td>${bookmark.entry.title}</td>
+      </tr>
+      <tr>
+        <th>${s.i18n.getOrKey("bookmarks.entry.url")}</th>
+        <td>${bookmark.entry.url}</td>
+      </tr>
+      <tr>
+        <th>${s.i18n.getOrKey("bookmarks.entry.comment")}</th>
+        <td>${bookmark.comment}</td>
+      </tr>
+      <tr>
+        <th>${s.i18n.getOrKey("bookmarks.user.name")}</th>
+        <td>${bookmark.user.name}</td>
+      </tr>
+
+    </tbody>
+    </table>
+
+    <hr/>
+    <div class="form-actions">
+      <a class="btn btn-default" href="${s.url(simple.bookmark.controller.Controllers.bookmarks.indexUrl)}">${s.i18n.getOrKey("backToList")}</a>
+      <a class="btn btn-info"    href="${s.url(simple.bookmark.controller.Controllers.bookmarks.editGetUrl, "id" -> bookmark.id) }"> ${s.i18n.getOrKey("edit")}</a>
+      <a class="btn btn-danger"  data-method="delete" data-confirm="${s.i18n.getOrKey("bookmarks.delete.confirm")}"
+        href="${s.url(simple.bookmark.controller.Controllers.bookmarks.destroyUrl, "id" -> bookmark.id)}"  rel="nofollow">${s.i18n.getOrKey("delete")}</a>
+    </div>
+
+</div>

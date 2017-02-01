@@ -32,3 +32,10 @@ create unique index if not exists idx_tr_bookmark on tr_bookmark(USER_ID, ENTRY_
 
 
 CREATE ALIAS UUID FOR "org.h2.value.ValueUuid.getNewRandom";
+
+
+create table if not exists ms_check_fortest (
+    ID bigint not null ,
+    created_timestamp timestamp not null,
+    deleted_timestamp timestamp
+);

@@ -1,0 +1,32 @@
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+
+
+<form class="form-signin form-group ${if(keyAndErrorMessages.hasErrors("loginid")) "has-danger" else (if(keyAndErrorMessages.hasErrors("password")) "has-danger" else "")}" action="${s.url(simple.bookmark.controller.Controllers.root.loginUrl)}" method="post" class="form">
+    <h2 class="form-signin-heading">${s.i18n.get("toppage.form.title")}</h2>
+    <label for="inputEmail" class="sr-only">login id</label>
+    <input type="text" id="loginid" name="loginid" class="form-control" value="${s.params.getAs[String]("loginid")}" placeholder="Login ID" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+    #if (keyAndErrorMessages.hasErrors("loginid"))
+        <div class="col-xs-12 form-control-feedback">
+        #for (error <- keyAndErrorMessages.getErrors("loginid"))
+            <label class="control-label">${error}</label>
+        #end
+        </div>
+    #end
+    #if (keyAndErrorMessages.hasErrors("password"))
+        <div class="col-xs-12 form-control-feedback">
+        #for (error <- keyAndErrorMessages.getErrors("password"))
+            <label class="control-label">${error}</label>
+        #end
+        </div>
+    #end
+
+    #for (w <- s.flash.warn)
+        <div class="col-xs-12 alert alert-danger"> ${w} </div>
+    #end
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+</form>
+

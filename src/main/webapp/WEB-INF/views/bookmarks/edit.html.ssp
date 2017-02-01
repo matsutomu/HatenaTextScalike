@@ -1,0 +1,25 @@
+<%@val s: skinny.Skinny %>
+
+<%-- Be aware of package imports.
+ 1. src/main/scala/templates/ScalatePackage.scala
+ 2. scalateTemplateConfig in project/Build.scala
+--%>
+
+<!-- (s) this page contents -->
+<div class="starter-template">
+
+    <h3>${s.i18n.getOrKey("bookmarks.detail")} : #${s.params.id}</h3>
+    <hr/>
+
+    <%--
+    #for (e <- s.errorMessages)
+    <p class="alert alert-danger">${e}</p>
+    #end
+    --%>
+
+    <form method="post" action="${s.url(simple.bookmark.controller.Controllers.bookmarks.editPostUrl, "id" -> s.params.id)}" class="form">
+        ${include("_form.html.ssp")}
+    </form>
+
+</div>
+

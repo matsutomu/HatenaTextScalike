@@ -2,6 +2,8 @@
 build/
 logs/
 project/*-shim.sbt
+project/_skinny_assembyl.sbt
+project/Build_scala_20161214
 project/project/
 project/target/
 standalone-build/
@@ -18,4 +20,5 @@ tmp
 dist
 .cache
 .sbtconfig
+build_sbt.20161124
 !.gitkeep

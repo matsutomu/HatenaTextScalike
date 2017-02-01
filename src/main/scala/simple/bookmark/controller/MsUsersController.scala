@@ -4,7 +4,6 @@ import simple.bookmark.repository.MsUserDefault
 import skinny._
 import skinny.validator._
 
-import _root_.simple.bookmark.controller._
 
 class MsUsersController extends SkinnyResource with ApplicationController {
   protectFromForgery()
@@ -21,11 +20,15 @@ class MsUsersController extends SkinnyResource with ApplicationController {
   override def createParams = Params(params).withDateTime("created_timestamp").withDateTime("deleted_timestamp")
   override def createForm = validation(createParams,
     paramKey("name") is required & maxLength(100),
-    paramKey("created_timestamp") is required & dateTimeFormat,
+    paramKey("loginid") is maxLength(100),
+    paramKey("password") is maxLength(100),
+    paramKey("created_timestamp") is dateTimeFormat,
     paramKey("deleted_timestamp") is dateTimeFormat
   )
   override def createFormStrongParameters = Seq(
     "name" -> ParamType.String,
+    "loginid" -> ParamType.String,
+    "password" -> ParamType.String,
     "created_timestamp" -> ParamType.DateTime,
     "deleted_timestamp" -> ParamType.DateTime
   )
@@ -33,11 +36,15 @@ class MsUsersController extends SkinnyResource with ApplicationController {
   override def updateParams = Params(params).withDateTime("created_timestamp").withDateTime("deleted_timestamp")
   override def updateForm = validation(updateParams,
     paramKey("name") is required & maxLength(100),
-    paramKey("created_timestamp") is required & dateTimeFormat,
+    paramKey("loginid") is maxLength(100),
+    paramKey("password") is maxLength(100),
+    paramKey("created_timestamp") is dateTimeFormat,
     paramKey("deleted_timestamp") is dateTimeFormat
   )
   override def updateFormStrongParameters = Seq(
     "name" -> ParamType.String,
+    "loginid" -> ParamType.String,
+    "password" -> ParamType.String,
     "created_timestamp" -> ParamType.DateTime,
     "deleted_timestamp" -> ParamType.DateTime
   )

@@ -1,14 +1,24 @@
 package simple.bookmark.service
 
+import org.joda.time.LocalDateTime
 import scalikejdbc.{AutoSession, DBSession}
 import simple.bookmark.repository._
 import simple.bookmark.model._
 
+object BookmarkApp {
+
+  def createDefault():Bookmark = {
+    val defaultTime = LocalDateTime.now()
+    new simple.bookmark.model.Bookmark(0, simple.bookmark.model.User(0, "","","",defaultTime, Some(defaultTime)),
+        simple.bookmark.model.Entry(0, "", Some(""),defaultTime,Some(defaultTime)),"", defaultTime,defaultTime)
+  }
+}
 
 /**
   * Created by matsutomu on 16/02/24.
   */
 class BookmarkApp(currentUserName: String) {
+
 
   def currentUser(implicit session: DBSession = AutoSession):User = {
     Users.findOrCreateByName(currentUserName)
@@ -18,6 +28,9 @@ class BookmarkApp(currentUserName: String) {
     Bookmarks.find(bookmarkId)
   }
 
+  def findEntryByUrl(url:String)(implicit session: DBSession = AutoSession):Option[Entry] = {
+    Entries.findByUrl(url)
+  }
 
   def add(url:String, comment:String)(implicit session: DBSession = AutoSession):Either[Error,Bookmark] = {
     val entry = Entries.findOrCreateByUrl(url)

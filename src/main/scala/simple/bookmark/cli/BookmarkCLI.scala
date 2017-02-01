@@ -1,8 +1,8 @@
 package simple.bookmark.cli
 
 import scalikejdbc._
-import scalikejdbc.{ConnectionPool, AutoSession, DBSession}
-import simple.bookmark.model.Bookmark
+import scalikejdbc.{AutoSession, ConnectionPool, DBSession}
+import simple.bookmark.model.{Bookmark, User}
 import simple.bookmark.service.BookmarkApp
 
 import scala.sys.process

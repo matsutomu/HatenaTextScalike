@@ -6,8 +6,11 @@ import org.joda.time.{DateTime}
 case class MsUser(
   id: Long,
   name: String,
+  loginid : String,
+  password: String,
   createdTimestamp: DateTime,
-  deletedTimestamp: Option[DateTime] = None) {
+  deletedTimestamp: Option[DateTime] = None,
+  updatedTimestamp: Option[DateTime] = None) {
 
   def save()(implicit session: DBSession = MsUser.autoSession): MsUser = MsUser.save(this)(session)
 
@@ -20,14 +23,17 @@ object MsUser extends SQLSyntaxSupport[MsUser] {
 
   override val tableName = "MS_USER"
 
-  override val columns = Seq("ID", "NAME", "CREATED_TIMESTAMP", "DELETED_TIMESTAMP")
+  override val columns = Seq("ID", "NAME", "LOGINID", "PASSWORD" , "CREATED_TIMESTAMP", "DELETED_TIMESTAMP", "UPDATED_TIMESTAMP")
 
   def apply(mu: SyntaxProvider[MsUser])(rs: WrappedResultSet): MsUser = apply(mu.resultName)(rs)
   def apply(mu: ResultName[MsUser])(rs: WrappedResultSet): MsUser = new MsUser(
     id = rs.get(mu.id),
     name = rs.get(mu.name),
+    loginid = rs.get(mu.loginid),
+    password = rs.get(mu.password),
     createdTimestamp = rs.get(mu.createdTimestamp),
-    deletedTimestamp = rs.get(mu.deletedTimestamp)
+    deletedTimestamp = rs.get(mu.deletedTimestamp),
+    updatedTimestamp = rs.get(mu.updatedTimestamp)
   )
 
   val mu = MsUser.syntax("mu")
@@ -68,41 +74,62 @@ object MsUser extends SQLSyntaxSupport[MsUser] {
 
   def create(
     name: String,
+    loginid: String,
+    password: String,
     createdTimestamp: DateTime,
-    deletedTimestamp: Option[DateTime] = None)(implicit session: DBSession = autoSession): MsUser = {
+    deletedTimestamp: Option[DateTime] = None,
+    updatedTimestamp: Option[DateTime] = None)(implicit session: DBSession = autoSession): MsUser = {
     val generatedKey = withSQL {
       insert.into(MsUser).columns(
         column.name,
+        column.loginid,
+        column.password,
         column.createdTimestamp,
-        column.deletedTimestamp
+        column.deletedTimestamp,
+        column.updatedTimestamp
       ).values(
         name,
+        loginid,
+        password,
         createdTimestamp,
-        deletedTimestamp
+        deletedTimestamp,
+        updatedTimestamp
       )
     }.updateAndReturnGeneratedKey.apply()
 
     MsUser(
       id = generatedKey,
       name = name,
+      loginid = loginid,
+      password = password,
       createdTimestamp = createdTimestamp,
-      deletedTimestamp = deletedTimestamp)
+      deletedTimestamp = deletedTimestamp,
+      updatedTimestamp = updatedTimestamp)
   }
 
   def batchInsert(entities: Seq[MsUser])(implicit session: DBSession = autoSession): Seq[Int] = {
     val params: Seq[Seq[(Symbol, Any)]] = entities.map(entity =>
       Seq(
         'name -> entity.name,
+        'loginid -> entity.loginid,
+        'password -> entity.password,
         'createdTimestamp -> entity.createdTimestamp,
-        'deletedTimestamp -> entity.deletedTimestamp))
+        'deletedTimestamp -> entity.deletedTimestamp,
+        'updatedTimestamp -> entity.updatedTimestamp))
         SQL("""insert into MS_USER(
         NAME,
+        LOGINID,
+        PASSWORD,
         CREATED_TIMESTAMP,
-        DELETED_TIMESTAMP
+        DELETED_TIMESTAMP,
+        UPDATED_TIMESTAMP
       ) values (
         {name},
+        {loginid},
+        {password},
         {createdTimestamp},
-        {deletedTimestamp}
+        {deletedTimestamp},
+        {updatedTimestamp}
       )""").batchByName(params: _*).apply()
     }
 
@@ -111,8 +138,11 @@ object MsUser extends SQLSyntaxSupport[MsUser] {
       update(MsUser).set(
         column.id -> entity.id,
         column.name -> entity.name,
+        column.loginid -> entity.loginid,
+        column.password -> entity.password,
         column.createdTimestamp -> entity.createdTimestamp,
-        column.deletedTimestamp -> entity.deletedTimestamp
+        column.deletedTimestamp -> entity.deletedTimestamp,
+        column.updatedTimestamp -> entity.updatedTimestamp
       ).where.eq(column.id, entity.id)
     }.update.apply()
     entity

@@ -1,0 +1,21 @@
+<%@val s: skinny.Skinny %>
+
+
+<div class="starter-template">
+
+  <h3>${s.i18n.getOrKey("bookmarks.new")}</h3>
+  <hr/>
+
+  <%--
+  #for (e <- s.errorMessages)
+  <p class="alert alert-danger">${e}</p>
+  #end
+  --%>
+
+  <form method="post" action="${s.url(simple.bookmark.controller.Controllers.bookmarks.addPostUrl)}" class="form">
+   ${include("_form.html.ssp")}
+  </form>
+
+
+</div>
+
