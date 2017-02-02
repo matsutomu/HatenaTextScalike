@@ -20,5 +20,6 @@ tmp
 dist
 .cache
 .sbtconfig
+.gitignore~
 build_sbt.20161124
 !.gitkeep
