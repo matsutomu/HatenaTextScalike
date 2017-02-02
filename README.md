@@ -36,7 +36,8 @@ Slick 3 が難しかったので、ScalikeJDBCの学習を兼ねつつSlickの�
 
 ## システム構成
 
-|パス|説明|
+| パス | 説明 |
+|:-----------|:-----------|
 |src/main/resources|設定ファイル色々。|
 |src/main/scala/repository|データベースアクセス用のクラスを格納。更にdaoフォルダを用意して、ScalikeJDBCからの自動生成クラスを格納。|
 |src/main/scala/model|論理層間の値をやりとりするための"case class"を定義。|
